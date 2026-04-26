@@ -1,0 +1,26 @@
+name: Update Calendar Image
+on:
+  schedule:
+    - cron: '0 * * * *' # Updates every hour
+  workflow_dispatch:   # Allows you to click a button to update manually
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install playwright
+      - run: npx playwright install chromium --with-deps
+      - run: node screenshot.js
+      - name: Commit image
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add calendar.png
+          git commit -m "Refresh calendar" || exit 0
+          git push
