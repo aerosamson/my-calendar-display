@@ -1,7 +1,7 @@
 name: Update Calendar Image
 on:
   schedule:
-    - cron: '0 * * * *' # Updates every hour
+    - cron: '*/15 * * * *' # Updates every 15mins
   workflow_dispatch:   # Allows you to click a button to update manually
 
 jobs:
